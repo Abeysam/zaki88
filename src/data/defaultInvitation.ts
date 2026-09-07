@@ -3,6 +3,7 @@ import galleryImg1 from '../assets/images/regenerated_image_1788774460876.jpg';
 import galleryImg2 from '../assets/images/regenerated_image_1788774464911.jpg';
 import galleryImg3 from '../assets/images/regenerated_image_1788774456280.jpg';
 import galleryImg4 from '../assets/images/regenerated_image_1788774468813.jpg';
+import defaultBacksound from '../assets/audio/backsound.mp3';
 
 export const initialInvitationData: InvitationData = {
   childFullName: "ZAKI ALVARO",
@@ -41,8 +42,8 @@ export const initialInvitationData: InvitationData = {
     galleryImg3,
     galleryImg4
   ],
-  musicTitle: "Instrumen Syahdu Khitanan",
-  musicUrl: "",
+  musicTitle: "A Thousand Years (Piano Instrumental)",
+  musicUrl: defaultBacksound,
   themeColor: "emerald"
 };
 

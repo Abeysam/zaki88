@@ -27,11 +27,14 @@ export default function App() {
         if (parsed.childFullName && !parsed.childFullName.includes("Rayyan")) {
           const hasOldUnsplashGallery = !parsed.galleryImages || parsed.galleryImages.some((img: string) => typeof img === 'string' && img.includes('unsplash.com'));
           const hasOldUnsplashPhoto = !parsed.photoUrl || (typeof parsed.photoUrl === 'string' && parsed.photoUrl.includes('unsplash.com'));
+          const useNewBacksound = !parsed.musicUrl || parsed.musicTitle === "Instrumen Syahdu Khitanan" || parsed.musicTitle === "Instrumen Khitanan";
           return {
             ...initialInvitationData,
             ...parsed,
             galleryImages: hasOldUnsplashGallery ? initialInvitationData.galleryImages : parsed.galleryImages,
             photoUrl: hasOldUnsplashPhoto ? initialInvitationData.photoUrl : parsed.photoUrl,
+            musicUrl: useNewBacksound ? initialInvitationData.musicUrl : parsed.musicUrl,
+            musicTitle: useNewBacksound ? initialInvitationData.musicTitle : parsed.musicTitle,
           };
         }
       }
