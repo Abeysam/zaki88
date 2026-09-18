@@ -8,10 +8,14 @@ import defaultBacksound from '../assets/audio/backsound.mp3';
 export const initialInvitationData: InvitationData = {
   childFullName: "ZAKI ALVARO",
   childNickName: "ZAKI",
-  childOrder: "Putra Kedua",
+  childOrder: "Putra Pertama",
   fatherName: "SUBHAN HALABI",
   motherName: "NUNUNG NURAENI",
   photoUrl: galleryImg1,
+  coverPhotoUrl: galleryImg1,
+  coverBackgroundUrl: galleryImg2,
+  coverBackgroundOpacity: 0.22,
+  qrisImageUrl: "",
   eventDate: "2026-09-27",
   eventTime: "09.00 WIB s/d Selesai",
   eventEndDate: "2026-09-27T17:00:00",
@@ -44,6 +48,7 @@ export const initialInvitationData: InvitationData = {
   ],
   musicTitle: "A Thousand Years (Piano Instrumental)",
   musicUrl: defaultBacksound,
+  whatsappNumber: "082124885823",
   themeColor: "emerald"
 };
 

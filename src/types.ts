@@ -22,6 +22,9 @@ export interface InvitationData {
   fatherName: string;
   motherName: string;
   photoUrl: string;
+  coverPhotoUrl?: string;
+  coverBackgroundUrl?: string;
+  coverBackgroundOpacity?: number;
   eventDate: string; // YYYY-MM-DD
   eventTime: string; // e.g. "09.00 WIB - Selesai"
   eventEndDate: string;
@@ -35,5 +38,6 @@ export interface InvitationData {
   galleryImages: string[];
   musicUrl?: string;
   musicTitle?: string;
+  whatsappNumber?: string;
   themeColor: 'emerald' | 'gold' | 'sapphire';
 }

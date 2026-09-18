@@ -5,13 +5,26 @@
     font-family: 'Amiri', serif;
   }
   .font-serif {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   }
   .font-display {
-    font-family: 'Cinzel Decorative', serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
   }
+  .font-script {
+    font-family: 'Alex Brush', cursive;
+  }
+}
+
+/* Custom Arch Shape for Kadio's signature arched cards & photo frames */
+.arch-frame {
+  border-radius: 120px 120px 24px 24px;
+}
+
+.arch-frame-sm {
+  border-radius: 80px 80px 20px 20px;
 }
 
 html {
   scroll-behavior: smooth;
 }
+

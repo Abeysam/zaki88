@@ -74,35 +74,35 @@ Kami yang berbahagia,
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="relative w-full max-w-lg bg-[#fcfcfb] rounded-[32px] p-6 sm:p-8 shadow-2xl border border-[#5A5A40]/25 my-8"
+          className="relative w-full max-w-lg bg-[#FAF7F8] rounded-[32px] p-6 sm:p-8 shadow-2xl border border-[#EACFD5] my-8 font-sans"
         >
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-5 right-5 text-[#5A5A40]/60 hover:text-[#343627] p-2 rounded-full hover:bg-[#E2E2D5]/50 transition cursor-pointer"
+            className="absolute top-5 right-5 text-[#8B3A4C]/60 hover:text-[#8B3A4C] p-2 rounded-full hover:bg-[#FDF2F4] transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
 
           {/* Header */}
           <div className="mb-6">
-            <h3 className="font-serif text-2xl font-bold text-[#343627] flex items-center gap-2.5">
-              <Share2 className="w-5 h-5 text-[#5A5A40]" />
+            <h3 className="font-serif text-2xl font-bold text-[#8B3A4C] flex items-center gap-2.5">
+              <Share2 className="w-5 h-5 text-[#BA5D72]" />
               <span>Bagikan & Info Website/Domain</span>
             </h3>
-            <p className="text-xs text-[#5A5A40]/80 mt-1 font-sans">
+            <p className="text-xs text-[#7D686E] mt-1 font-sans">
               Sebarkan undangan ke WhatsApp atau pasang domain kustom Anda.
             </p>
           </div>
 
           {/* Tabs */}
-          <div className="flex rounded-full bg-[#E2E2D5]/50 p-1 mb-6 border border-[#5A5A40]/20 font-sans">
+          <div className="flex rounded-full bg-[#F8EFF1] p-1 mb-6 border border-[#EACFD5] font-sans">
             <button
               onClick={() => setActiveTab('share')}
               className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeTab === 'share'
-                  ? 'bg-white text-[#5A5A40] shadow-xs'
-                  : 'text-[#5A5A40]/70 hover:text-[#5A5A40]'
+                  ? 'bg-white text-[#8B3A4C] shadow-xs'
+                  : 'text-[#7D686E] hover:text-[#8B3A4C]'
               }`}
             >
               <MessageSquare className="w-4 h-4" />
@@ -112,8 +112,8 @@ Kami yang berbahagia,
               onClick={() => setActiveTab('domain')}
               className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeTab === 'domain'
-                  ? 'bg-white text-[#5A5A40] shadow-xs'
-                  : 'text-[#5A5A40]/70 hover:text-[#5A5A40]'
+                  ? 'bg-white text-[#8B3A4C] shadow-xs'
+                  : 'text-[#7D686E] hover:text-[#8B3A4C]'
               }`}
             >
               <Globe className="w-4 h-4" />
@@ -125,7 +125,7 @@ Kami yang berbahagia,
           {activeTab === 'share' && (
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-sans font-bold uppercase tracking-wider text-[#5A5A40] mb-1.5">
+                <label className="block text-xs font-sans font-bold uppercase tracking-wider text-[#8B3A4C] mb-1.5">
                   Nama Tamu yang Diundang:
                 </label>
                 <input
@@ -133,17 +133,17 @@ Kami yang berbahagia,
                   value={guestNameInput}
                   onChange={(e) => setGuestNameInput(e.target.value)}
                   placeholder="Contoh: Bpk. H. Bambang & Keluarga"
-                  className="w-full px-4 py-2.5 rounded-2xl border border-[#5A5A40]/25 text-sm focus:outline-none focus:ring-2 focus:ring-[#5A5A40] bg-[#f5f5f0]/60 text-[#343627]"
+                  className="w-full px-4 py-2.5 rounded-2xl border border-[#EACFD5] text-sm focus:outline-none focus:ring-2 focus:ring-[#BA5D72]/30 bg-white text-[#332A2E]"
                 />
-                <p className="text-[11px] text-[#5A5A40]/75 mt-1 font-sans">
+                <p className="text-[11px] text-[#9E878E] mt-1 font-sans">
                   *Nama tamu otomatis tercantum di sampul depan undangan saat dibuka!
                 </p>
               </div>
 
               {/* URL Preview */}
-              <div className="p-3.5 bg-[#f5f5f0]/80 border border-[#5A5A40]/20 rounded-2xl">
-                <p className="text-[11px] font-sans text-[#5A5A40]/80 mb-1">Link Undangan Khusus:</p>
-                <p className="font-mono text-xs text-[#343627] break-all select-all font-medium">
+              <div className="p-3.5 bg-white border border-[#EACFD5] rounded-2xl">
+                <p className="text-[11px] font-sans text-[#7D686E] mb-1">Link Undangan Khusus:</p>
+                <p className="font-mono text-xs text-[#8B3A4C] break-all select-all font-semibold">
                   {personalizedUrl}
                 </p>
               </div>
@@ -153,11 +153,11 @@ Kami yang berbahagia,
                 <button
                   type="button"
                   onClick={handleCopyLink}
-                  className="py-2.5 px-3 rounded-full border border-[#5A5A40]/25 hover:bg-[#E2E2D5]/40 text-[#5A5A40] text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition cursor-pointer"
+                  className="py-2.5 px-3 rounded-full border border-[#EACFD5] hover:bg-[#FDF2F4] text-[#8B3A4C] text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition cursor-pointer"
                 >
                   {copiedLink ? (
                     <>
-                      <Check className="w-4 h-4 text-[#5A5A40]" />
+                      <Check className="w-4 h-4 text-[#BA5D72]" />
                       <span>Link Tersalin!</span>
                     </>
                   ) : (
@@ -171,11 +171,11 @@ Kami yang berbahagia,
                 <button
                   type="button"
                   onClick={handleCopyText}
-                  className="py-2.5 px-3 rounded-full border border-[#5A5A40]/25 hover:bg-[#E2E2D5]/40 text-[#5A5A40] text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition cursor-pointer"
+                  className="py-2.5 px-3 rounded-full border border-[#EACFD5] hover:bg-[#FDF2F4] text-[#8B3A4C] text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition cursor-pointer"
                 >
                   {copiedText ? (
                     <>
-                      <Check className="w-4 h-4 text-[#5A5A40]" />
+                      <Check className="w-4 h-4 text-[#BA5D72]" />
                       <span>Teks WA Tersalin!</span>
                     </>
                   ) : (

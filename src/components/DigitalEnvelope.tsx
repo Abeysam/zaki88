@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Gift, Copy, Check, CreditCard, Package, QrCode, Download, ShieldCheck } from 'lucide-react';
 import QRCode from 'qrcode';
+import confetti from 'canvas-confetti';
 import { BankAccount } from '../types';
 
 interface DigitalEnvelopeProps {
@@ -19,11 +20,25 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
   const [copiedAddress, setCopiedAddress] = useState(false);
   const [copiedNmid, setCopiedNmid] = useState(false);
   const [activeTab, setActiveTab] = useState<'qris' | 'bank' | 'gift'>('qris');
-  const [generatedQr, setGeneratedQr] = useState<string>('');
+  const [generatedQr, setGeneratedQr] = useState<string | null>(null);
+  const [hasAutoCelebrated, setHasAutoCelebrated] = useState(false);
 
   // Default QRIS details from user
   const qrisNmid = "ID1026577197746";
   const qrisMerchant = "SUBHAN HALABI, PULSA & INTERNET";
+
+  const triggerEnvelopeWelcomeCelebration = () => {
+    if (hasAutoCelebrated) return;
+    setHasAutoCelebrated(true);
+    confetti({
+      particleCount: 32,
+      spread: 55,
+      origin: { y: 0.75 },
+      colors: ['#BA5D72', '#E0A899', '#D4AF37', '#FAF7F8', '#8B3A4C'],
+      zIndex: 9999,
+      disableForReducedMotion: true,
+    });
+  };
 
   useEffect(() => {
     // Generate high resolution QR code for QRIS
@@ -44,9 +59,21 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
     });
   }, [qrisNmid]);
 
+  const triggerSmallConfetti = () => {
+    confetti({
+      particleCount: 24,
+      spread: 45,
+      origin: { y: 0.8 },
+      colors: ['#BA5D72', '#E0A899', '#D4AF37', '#FAF7F8'],
+      zIndex: 9999,
+      disableForReducedMotion: true,
+    });
+  };
+
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
     setCopiedId(id);
+    triggerSmallConfetti();
     setTimeout(() => setCopiedId(null), 2500);
   };
 
@@ -54,12 +81,14 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
     if (!giftAddress) return;
     navigator.clipboard.writeText(giftAddress);
     setCopiedAddress(true);
+    triggerSmallConfetti();
     setTimeout(() => setCopiedAddress(false), 2500);
   };
 
   const handleCopyNmid = () => {
     navigator.clipboard.writeText(qrisNmid);
     setCopiedNmid(true);
+    triggerSmallConfetti();
     setTimeout(() => setCopiedNmid(false), 2500);
   };
 
@@ -67,29 +96,42 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
     <section id="amplop-section" className="py-16 px-4">
       <div className="max-w-xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <p className="text-xs uppercase tracking-[0.25em] font-sans font-bold text-[#5A5A40]/75 mb-1.5">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          onViewportEnter={triggerEnvelopeWelcomeCelebration}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-8"
+        >
+          <div className="inline-block px-3 py-1 rounded-full bg-[#FDF2F4] border border-[#F3CBD3] text-[10px] font-sans uppercase tracking-[0.25em] font-bold text-[#8B3A4C] mb-2.5">
             Tanda Kasih
-          </p>
-          <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#343627]">
+          </div>
+          <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#8B3A4C]">
             Amplop Digital
           </h3>
-          <p className="text-xs text-[#5A5A40]/80 mt-2 max-w-md mx-auto leading-relaxed">
+          <p className="text-xs text-[#7D686E] mt-2 max-w-md mx-auto leading-relaxed">
             Doa restu Anda merupakan karunia yang sangat berharga bagi kami. Namun jika
             memberi adalah ungkapan tanda kasih, Anda dapat menyampaikannya secara cashless melalui:
           </p>
-          <div className="w-12 h-0.5 bg-[#5A5A40]/30 mx-auto mt-3 rounded-full" />
-        </div>
+          <div className="w-12 h-0.5 bg-[#BA5D72]/40 mx-auto mt-3 rounded-full" />
+        </motion.div>
 
         {/* Tab Selector */}
-        <div className="flex rounded-full bg-[#E2E2D5]/60 p-1.5 mb-6 max-w-md mx-auto border border-[#5A5A40]/20 font-sans">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="flex rounded-full bg-[#F8EFF1] p-1.5 mb-6 max-w-md mx-auto border border-[#EACFD5] font-sans"
+        >
           <button
             type="button"
             onClick={() => setActiveTab('qris')}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
               activeTab === 'qris'
-                ? 'bg-[#5A5A40] text-white shadow-xs'
-                : 'text-[#5A5A40]/70 hover:text-[#5A5A40]'
+                ? 'bg-[#8B3A4C] text-white shadow-xs'
+                : 'text-[#7D686E] hover:text-[#8B3A4C]'
             }`}
           >
             <QrCode className="w-3.5 h-3.5" />
@@ -100,8 +142,8 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
             onClick={() => setActiveTab('bank')}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
               activeTab === 'bank'
-                ? 'bg-[#5A5A40] text-white shadow-xs'
-                : 'text-[#5A5A40]/70 hover:text-[#5A5A40]'
+                ? 'bg-[#8B3A4C] text-white shadow-xs'
+                : 'text-[#7D686E] hover:text-[#8B3A4C]'
             }`}
           >
             <CreditCard className="w-3.5 h-3.5" />
@@ -112,72 +154,93 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
             onClick={() => setActiveTab('gift')}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
               activeTab === 'gift'
-                ? 'bg-[#5A5A40] text-white shadow-xs'
-                : 'text-[#5A5A40]/70 hover:text-[#5A5A40]'
+                ? 'bg-[#8B3A4C] text-white shadow-xs'
+                : 'text-[#7D686E] hover:text-[#8B3A4C]'
             }`}
           >
             <Package className="w-3.5 h-3.5" />
             <span>Kado</span>
           </button>
-        </div>
+        </motion.div>
 
         {/* Tab 1: QRIS Card */}
         {activeTab === 'qris' && (
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white border-2 border-[#5A5A40]/25 rounded-[32px] p-6 sm:p-7 shadow-lg text-center overflow-hidden"
+            className="bg-white border border-[#EACFD5] rounded-[32px] p-6 sm:p-7 shadow-lg shadow-rose-950/5 text-center overflow-hidden"
           >
-            {/* Authentic QRIS Header Banner */}
-            <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
-              <div className="flex items-center gap-2">
-                <span className="font-sans font-black text-xl tracking-tight text-red-600">
-                  QRIS
-                </span>
-                <span className="text-[10px] text-gray-500 font-sans leading-none text-left hidden sm:inline-block">
-                  QR Code Standar<br />Pembayaran Nasional
-                </span>
+            {/* Authentic QRIS Flyer or QR Code Banner */}
+            {qrisImageUrl ? (
+              <div className="mb-4">
+                <div className="bg-[#FAF7F8] p-2 sm:p-3 rounded-2xl border border-[#F0D5DA] inline-block shadow-inner max-w-xs mx-auto overflow-hidden">
+                  <img
+                    src={qrisImageUrl}
+                    alt="QRIS Standar Pembayaran Nasional Subhan Halabi"
+                    className="w-full max-w-[280px] h-auto object-contain mx-auto rounded-xl shadow-xs"
+                  />
+                </div>
               </div>
-              <div className="flex items-center gap-1 bg-red-50 text-red-700 px-2.5 py-1 rounded-full text-[11px] font-bold">
-                <ShieldCheck className="w-3.5 h-3.5 text-red-600" />
-                <span>GPN</span>
-              </div>
-            </div>
+            ) : (
+              <>
+                {/* Authentic QRIS Header Banner */}
+                <div className="flex items-center justify-between border-b border-[#F0D5DA] pb-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="font-sans font-black text-xl tracking-tight text-red-600">
+                      QRIS
+                    </span>
+                    <span className="text-[10px] text-gray-500 font-sans leading-none text-left hidden sm:inline-block">
+                      QR Code Standar<br />Pembayaran Nasional
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1 bg-red-50 text-red-700 px-2.5 py-1 rounded-full text-[11px] font-bold">
+                    <ShieldCheck className="w-3.5 h-3.5 text-red-600" />
+                    <span>GPN</span>
+                  </div>
+                </div>
 
-            {/* Merchant Name & NMID */}
-            <div className="mb-4">
-              <h4 className="font-sans font-extrabold text-[#343627] text-base sm:text-lg tracking-wide uppercase">
-                {qrisMerchant}
-              </h4>
-              <div className="flex items-center justify-center gap-2 mt-1">
-                <p className="text-xs text-gray-600 font-mono">
-                  NMID: <span className="font-bold text-gray-800">{qrisNmid}</span>
-                </p>
-                <button
-                  type="button"
-                  onClick={handleCopyNmid}
-                  title="Salin NMID"
-                  className="text-gray-400 hover:text-gray-700 p-0.5 rounded cursor-pointer"
-                >
-                  {copiedNmid ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
-                </button>
-              </div>
-              <span className="inline-block text-[10px] text-gray-400 font-mono mt-0.5">
-                A01 • SATU QRIS UNTUK SEMUA
-              </span>
-            </div>
+                {/* Merchant Name & NMID */}
+                <div className="mb-4">
+                  <h4 className="font-sans font-extrabold text-[#332A2E] text-base sm:text-lg tracking-wide uppercase">
+                    {qrisMerchant}
+                  </h4>
+                  <div className="flex items-center justify-center gap-2 mt-1">
+                    <p className="text-xs text-gray-600 font-mono">
+                      NMID: <span className="font-bold text-gray-800">{qrisNmid}</span>
+                    </p>
+                    <button
+                      type="button"
+                      onClick={handleCopyNmid}
+                      title="Salin NMID"
+                      className="text-gray-400 hover:text-gray-700 p-0.5 rounded cursor-pointer"
+                    >
+                      {copiedNmid ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    </button>
+                  </div>
+                  <span className="inline-block text-[10px] text-gray-400 font-mono mt-0.5">
+                    A01 • SATU QRIS UNTUK SEMUA
+                  </span>
+                </div>
 
-            {/* Center QR Code Image */}
-            <div className="bg-[#f9f9f8] p-4 rounded-2xl border border-gray-200 inline-block mb-4 shadow-inner max-w-xs mx-auto">
-              <img
-                src={qrisImageUrl || generatedQr}
-                alt="QRIS Subhan Halabi"
-                className="w-56 h-56 sm:w-64 sm:h-64 object-contain mx-auto rounded-lg"
-              />
-            </div>
+                {/* Center QR Code Image */}
+                <div className="bg-[#FAF7F8] p-4 rounded-2xl border border-[#F0D5DA] inline-block mb-4 shadow-inner max-w-xs mx-auto min-h-[224px] flex items-center justify-center">
+                  {generatedQr ? (
+                    <img
+                      src={generatedQr}
+                      alt="QRIS Subhan Halabi"
+                      className="w-56 h-56 sm:w-64 sm:h-64 object-contain mx-auto rounded-lg"
+                    />
+                  ) : (
+                    <div className="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center text-xs text-[#7D686E]">
+                      Memuat QRIS...
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
 
             {/* Instruction & Supported Apps */}
-            <p className="text-xs text-[#5A5A40]/90 mb-4 max-w-xs mx-auto leading-relaxed">
+            <p className="text-xs text-[#7D686E] mb-4 max-w-xs mx-auto leading-relaxed">
               Dapat discan menggunakan aplikasi Mobile Banking apa saja (BCA, Mandiri, BRI, BSI) maupun E-Wallet (DANA, GoPay, OVO, ShopeePay, LinkAja).
             </p>
 
@@ -186,7 +249,7 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
               <button
                 type="button"
                 onClick={handleCopyNmid}
-                className="py-3 px-4 rounded-full text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-2 border border-[#5A5A40]/30 text-[#5A5A40] hover:bg-[#f5f5f0] transition cursor-pointer"
+                className="py-3 px-4 rounded-full text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-2 border border-[#EACFD5] text-[#8B3A4C] hover:bg-[#FDF2F4] transition cursor-pointer"
               >
                 {copiedNmid ? (
                   <>
@@ -201,11 +264,11 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
                 )}
               </button>
 
-              {generatedQr && (
+              {(qrisImageUrl || generatedQr) && (
                 <a
-                  href={generatedQr}
+                  href={qrisImageUrl || generatedQr}
                   download="QRIS-Subhan-Halabi.png"
-                  className="py-3 px-4 rounded-full text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-2 bg-[#5A5A40] hover:bg-[#484833] text-white shadow-xs transition cursor-pointer"
+                  className="py-3 px-4 rounded-full text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-2 bg-gradient-to-r from-[#8B3A4C] via-[#9E4559] to-[#8B3A4C] hover:opacity-95 text-white shadow-md shadow-rose-900/20 transition cursor-pointer"
                 >
                   <Download className="w-4 h-4" />
                   <span>Unduh QR Code</span>
@@ -225,24 +288,24 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
                   key={account.id}
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-white/85 border border-[#5A5A40]/20 rounded-[32px] p-6 sm:p-7 shadow-xs relative overflow-hidden"
+                  className="bg-white border border-[#EACFD5] rounded-[32px] p-6 sm:p-7 shadow-xs relative overflow-hidden"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <span className="font-serif font-bold text-base sm:text-lg text-[#343627] tracking-wide">
+                    <span className="font-serif font-bold text-base sm:text-lg text-[#8B3A4C] tracking-wide">
                       {account.bankName}
                     </span>
-                    <span className="text-[11px] px-3 py-1 rounded-full bg-[#E2E2D5] font-sans font-medium text-[#5A5A40]">
+                    <span className="text-[11px] px-3 py-1 rounded-full bg-[#FDF2F4] font-sans font-medium text-[#8B3A4C] border border-[#F3CBD3]">
                       Rekening / E-Wallet
                     </span>
                   </div>
 
-                  <div className="bg-[#f5f5f0]/70 border border-[#5A5A40]/15 rounded-2xl p-4 mb-4">
-                    <p className="text-xs text-[#5A5A40]/70 font-sans uppercase tracking-wider mb-1">Nomor Rekening / Nomor Ponsel:</p>
-                    <p className="font-mono text-xl sm:text-2xl font-bold text-[#343627] tracking-wider">
+                  <div className="bg-[#FDF7F8] border border-[#F0D5DA] rounded-2xl p-4 mb-4">
+                    <p className="text-xs text-[#9E878E] font-sans uppercase tracking-wider mb-1">Nomor Rekening / Nomor Ponsel:</p>
+                    <p className="font-mono text-xl sm:text-2xl font-bold text-[#332A2E] tracking-wider">
                       {account.accountNumber}
                     </p>
-                    <p className="text-xs text-[#5A5A40]/90 mt-1.5">
-                      Atas Nama: <span className="font-bold text-[#343627] uppercase">{account.accountHolder}</span>
+                    <p className="text-xs text-[#7D686E] mt-1.5">
+                      Atas Nama: <span className="font-bold text-[#332A2E] uppercase">{account.accountHolder}</span>
                     </p>
                   </div>
 
@@ -251,13 +314,13 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
                     onClick={() => handleCopy(account.accountNumber, account.id)}
                     className={`w-full py-3 px-4 rounded-full text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition cursor-pointer ${
                       isCopied
-                        ? 'bg-[#3E4030] text-[#E2E2D5] shadow-xs'
-                        : 'bg-[#5A5A40] hover:bg-[#484833] text-white shadow-xs'
+                        ? 'bg-[#6D2838] text-white shadow-xs'
+                        : 'bg-gradient-to-r from-[#8B3A4C] via-[#9E4559] to-[#8B3A4C] hover:opacity-95 text-white shadow-md shadow-rose-900/20'
                     }`}
                   >
                     {isCopied ? (
                       <>
-                        <Check className="w-4 h-4 text-[#E2E2D5]" />
+                        <Check className="w-4 h-4 text-white" />
                         <span>Nomor Berhasil Disalin!</span>
                       </>
                     ) : (
@@ -278,19 +341,19 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white/85 border border-[#5A5A40]/20 rounded-[32px] p-6 sm:p-7 shadow-xs"
+            className="bg-white border border-[#EACFD5] rounded-[32px] p-6 sm:p-7 shadow-xs"
           >
             <div className="flex items-center gap-2.5 mb-3">
-              <Gift className="w-5 h-5 text-[#5A5A40]" />
-              <h4 className="font-serif font-bold text-[#343627] text-base sm:text-lg">
+              <Gift className="w-5 h-5 text-[#BA5D72]" />
+              <h4 className="font-serif font-bold text-[#8B3A4C] text-base sm:text-lg">
                 Alamat Kirim Kado Khitan
               </h4>
             </div>
-            <p className="text-xs text-[#5A5A40]/80 mb-4 leading-relaxed">
+            <p className="text-xs text-[#7D686E] mb-4 leading-relaxed">
               Bagi Anda yang ingin mengirimkan kado fisik untuk ananda Zaki Alvaro, dapat dikirimkan ke alamat berikut:
             </p>
 
-            <div className="bg-[#f5f5f0]/70 border border-[#5A5A40]/15 rounded-2xl p-4 text-xs sm:text-sm text-[#343627] mb-4 leading-relaxed font-medium">
+            <div className="bg-[#FDF7F8] border border-[#F0D5DA] rounded-2xl p-4 text-xs sm:text-sm text-[#332A2E] mb-4 leading-relaxed font-medium">
               {giftAddress || "Ds. Pedaleman Kp. Pesisir RT 004 / RW 002, Pasar Lembentuk (Kediaman Bpk. Subhan Halabi & Ibu Nunung Nuraeni) - Telp: 0821-2488-5823"}
             </div>
 
@@ -299,13 +362,13 @@ export const DigitalEnvelope: React.FC<DigitalEnvelopeProps> = ({
               onClick={handleCopyAddress}
               className={`w-full py-3 px-4 rounded-full text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition cursor-pointer ${
                 copiedAddress
-                  ? 'bg-[#3E4030] text-[#E2E2D5] shadow-xs'
-                  : 'bg-[#5A5A40] hover:bg-[#484833] text-white shadow-xs'
+                  ? 'bg-[#6D2838] text-white shadow-xs'
+                  : 'bg-gradient-to-r from-[#8B3A4C] via-[#9E4559] to-[#8B3A4C] hover:opacity-95 text-white shadow-md shadow-rose-900/20'
               }`}
             >
               {copiedAddress ? (
                 <>
-                  <Check className="w-4 h-4 text-[#E2E2D5]" />
+                  <Check className="w-4 h-4 text-white" />
                   <span>Alamat Berhasil Disalin!</span>
                 </>
               ) : (

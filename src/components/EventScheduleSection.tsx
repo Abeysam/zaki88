@@ -71,52 +71,59 @@ export const EventScheduleSection: React.FC<EventScheduleSectionProps> = ({ data
     <section id="acara-section" className="py-16 px-4">
       <div className="max-w-xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-10">
-          <p className="text-xs uppercase tracking-[0.25em] font-sans font-bold text-[#5A5A40]/75 mb-1.5">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-10"
+        >
+          <div className="inline-block px-3 py-1 rounded-full bg-[#FDF2F4] border border-[#F3CBD3] text-[10px] font-sans uppercase tracking-[0.25em] font-bold text-[#8B3A4C] mb-2.5">
             Waktu & Tempat
-          </p>
-          <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#343627]">
+          </div>
+          <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#8B3A4C]">
             Rangkaian Acara
           </h3>
-          <div className="w-12 h-0.5 bg-[#5A5A40]/30 mx-auto mt-3 rounded-full" />
-        </div>
+          <div className="w-12 h-0.5 bg-[#BA5D72]/40 mx-auto mt-3 rounded-full" />
+        </motion.div>
 
-        {/* Countdown Timer */}
+        {/* Countdown Timer in Kadio Arctic Rose Style */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-[#2D2F24] text-[#E2E2D5] rounded-[32px] p-6 sm:p-8 mb-8 border border-[#5A5A40]/30 shadow-xl text-center relative overflow-hidden"
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          className="bg-white text-[#332A2E] rounded-[32px] p-6 sm:p-8 mb-8 border border-[#EACFD5] shadow-lg shadow-rose-950/5 text-center relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#5A5A40]/20 rounded-full blur-2xl pointer-events-none" />
-          <p className="text-xs font-sans font-bold text-[#B8B8A4] uppercase tracking-[0.25em] mb-4">
+          <div className="absolute -top-10 -right-10 w-36 h-36 bg-[#FDF2F4] rounded-full blur-2xl pointer-events-none" />
+          <p className="text-xs font-sans font-bold text-[#BA5D72] uppercase tracking-[0.25em] mb-4">
             Hitung Mundur Acara
           </p>
 
           <div className="grid grid-cols-4 gap-2 sm:gap-4 mb-6">
-            <div className="bg-[#383A2E]/90 border border-[#5A5A40]/30 rounded-2xl p-3">
-              <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#F5F5F0]">
+            <div className="bg-[#FDF7F8] border border-[#F0D5DA] rounded-2xl p-3 sm:p-4 shadow-xs">
+              <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#8B3A4C]">
                 {timeLeft.days}
               </span>
-              <span className="text-[10px] sm:text-xs font-sans uppercase tracking-wider text-[#A6A692]">Hari</span>
+              <span className="text-[10px] sm:text-xs font-sans uppercase tracking-wider text-[#9E878E]">Hari</span>
             </div>
-            <div className="bg-[#383A2E]/90 border border-[#5A5A40]/30 rounded-2xl p-3">
-              <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#F5F5F0]">
+            <div className="bg-[#FDF7F8] border border-[#F0D5DA] rounded-2xl p-3 sm:p-4 shadow-xs">
+              <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#8B3A4C]">
                 {timeLeft.hours}
               </span>
-              <span className="text-[10px] sm:text-xs font-sans uppercase tracking-wider text-[#A6A692]">Jam</span>
+              <span className="text-[10px] sm:text-xs font-sans uppercase tracking-wider text-[#9E878E]">Jam</span>
             </div>
-            <div className="bg-[#383A2E]/90 border border-[#5A5A40]/30 rounded-2xl p-3">
-              <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#F5F5F0]">
+            <div className="bg-[#FDF7F8] border border-[#F0D5DA] rounded-2xl p-3 sm:p-4 shadow-xs">
+              <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#8B3A4C]">
                 {timeLeft.minutes}
               </span>
-              <span className="text-[10px] sm:text-xs font-sans uppercase tracking-wider text-[#A6A692]">Menit</span>
+              <span className="text-[10px] sm:text-xs font-sans uppercase tracking-wider text-[#9E878E]">Menit</span>
             </div>
-            <div className="bg-[#383A2E]/90 border border-[#5A5A40]/30 rounded-2xl p-3">
-              <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#F5F5F0]">
+            <div className="bg-[#FDF7F8] border border-[#F0D5DA] rounded-2xl p-3 sm:p-4 shadow-xs">
+              <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#8B3A4C]">
                 {timeLeft.seconds}
               </span>
-              <span className="text-[10px] sm:text-xs font-sans uppercase tracking-wider text-[#A6A692]">Detik</span>
+              <span className="text-[10px] sm:text-xs font-sans uppercase tracking-wider text-[#9E878E]">Detik</span>
             </div>
           </div>
 
@@ -125,50 +132,51 @@ export const EventScheduleSection: React.FC<EventScheduleSectionProps> = ({ data
             href={createGoogleCalendarUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#5A5A40] hover:bg-[#4A4A33] border border-[#E2E2D5]/20 text-[#F5F5F0] text-xs font-sans uppercase tracking-wider font-bold transition cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#FDF2F4] hover:bg-[#FBE4E8] border border-[#F3CBD3] text-[#8B3A4C] text-xs font-sans uppercase tracking-wider font-bold transition cursor-pointer shadow-xs"
           >
-            <CalendarPlus className="w-4 h-4 text-[#E2E2D5]" />
+            <CalendarPlus className="w-4 h-4 text-[#BA5D72]" />
             <span>Simpan ke Google Calendar</span>
           </a>
         </motion.div>
 
         {/* Schedule Card */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-white/80 backdrop-blur-xs rounded-[32px] p-6 sm:p-8 border border-[#5A5A40]/20 shadow-xs space-y-6"
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.65, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="bg-white rounded-[32px] p-6 sm:p-8 border border-[#EACFD5] shadow-xs space-y-6"
         >
           {/* Card Header */}
-          <div className="flex items-center gap-3.5 border-b border-[#5A5A40]/15 pb-4">
-            <div className="w-11 h-11 rounded-2xl bg-[#E2E2D5] text-[#5A5A40] flex items-center justify-center">
-              <Calendar className="w-5 h-5" />
+          <div className="flex items-center gap-3.5 border-b border-[#F0D5DA] pb-4">
+            <div className="w-12 h-12 rounded-2xl bg-[#FDF2F4] text-[#8B3A4C] border border-[#F3CBD3] flex items-center justify-center shadow-xs">
+              <Calendar className="w-5 h-5 text-[#8B3A4C]" />
             </div>
             <div>
-              <h4 className="font-serif font-bold text-[#343627] text-lg">
+              <h4 className="font-serif font-bold text-[#8B3A4C] text-xl">
                 Syukuran Walimatul Khitan
               </h4>
-              <p className="text-xs text-[#5A5A40]/80">Resepsi & Ramah Tamah</p>
+              <p className="text-xs text-[#8C757B]">Resepsi & Ramah Tamah</p>
             </div>
           </div>
 
           {/* Date & Time */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="flex items-start gap-3">
-              <Calendar className="w-4 h-4 text-[#5A5A40] mt-1 shrink-0" />
+              <Calendar className="w-4 h-4 text-[#BA5D72] mt-1 shrink-0" />
               <div>
-                <p className="text-xs text-[#5A5A40]/70 font-medium font-sans">Hari & Tanggal</p>
-                <p className="text-sm font-serif font-bold text-[#343627]">
+                <p className="text-xs text-[#9E878E] font-medium font-sans">Hari & Tanggal</p>
+                <p className="text-sm font-serif font-bold text-[#332A2E]">
                   {formatIndonesianDate(data.eventDate)}
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <Clock className="w-4 h-4 text-[#5A5A40] mt-1 shrink-0" />
+              <Clock className="w-4 h-4 text-[#BA5D72] mt-1 shrink-0" />
               <div>
-                <p className="text-xs text-[#5A5A40]/70 font-medium font-sans">Waktu Acara</p>
-                <p className="text-sm font-serif font-bold text-[#343627]">
+                <p className="text-xs text-[#9E878E] font-medium font-sans">Waktu Acara</p>
+                <p className="text-sm font-serif font-bold text-[#332A2E]">
                   {data.eventTime}
                 </p>
               </div>
@@ -176,14 +184,14 @@ export const EventScheduleSection: React.FC<EventScheduleSectionProps> = ({ data
           </div>
 
           {/* Venue & Address */}
-          <div className="flex items-start gap-3 pt-2 border-t border-[#5A5A40]/15">
-            <MapPin className="w-4 h-4 text-[#5A5A40] mt-1 shrink-0" />
+          <div className="flex items-start gap-3 pt-2 border-t border-[#F0D5DA]">
+            <MapPin className="w-4 h-4 text-[#BA5D72] mt-1 shrink-0" />
             <div>
-              <p className="text-xs text-[#5A5A40]/70 font-medium font-sans">Tempat / Lokasi</p>
-              <p className="text-sm font-serif font-bold text-[#343627]">
+              <p className="text-xs text-[#9E878E] font-medium font-sans">Tempat / Lokasi</p>
+              <p className="text-sm font-serif font-bold text-[#332A2E]">
                 {data.venueName}
               </p>
-              <p className="text-xs text-[#5A5A40]/90 mt-1 leading-relaxed">
+              <p className="text-xs text-[#6C5E64] mt-1 leading-relaxed">
                 {data.venueAddress}
               </p>
             </div>
@@ -196,7 +204,7 @@ export const EventScheduleSection: React.FC<EventScheduleSectionProps> = ({ data
               href={data.googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-5 rounded-full bg-[#5A5A40] hover:bg-[#484833] text-white font-sans font-bold text-xs uppercase tracking-wider shadow-xs transition active:scale-[0.99] cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-5 rounded-full bg-gradient-to-r from-[#8B3A4C] via-[#9E4559] to-[#8B3A4C] hover:opacity-95 text-white font-sans font-bold text-xs uppercase tracking-wider shadow-md shadow-rose-900/20 transition active:scale-[0.99] cursor-pointer"
             >
               <Navigation className="w-4 h-4" />
               <span>Petunjuk Arah Google Maps</span>

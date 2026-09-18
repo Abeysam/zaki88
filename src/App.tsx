@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { initialInvitationData, initialWishes } from './data/defaultInvitation';
 import { InvitationData, WishMessage } from './types';
 import { musicPlayer } from './utils/sound';
-import { OpeningEnvelope } from './components/OpeningEnvelope';
+import { OpeningEnvelope, triggerWelcomeConfetti } from './components/OpeningEnvelope';
 import { HeroSection } from './components/HeroSection';
 import { ChildProfile } from './components/ChildProfile';
 import { EventScheduleSection } from './components/EventScheduleSection';
@@ -13,28 +13,29 @@ import { FooterSection } from './components/FooterSection';
 import { MusicPlayer } from './components/MusicPlayer';
 import { BottomNavBar } from './components/BottomNavBar';
 import { ShareAndDomainModal } from './components/ShareAndDomainModal';
-import { EditorModal } from './components/EditorModal';
-import { Share2, Edit3, Globe } from 'lucide-react';
+import { MediaSettingsModal } from './components/MediaSettingsModal';
+import { BackToTop } from './components/BackToTop';
+import { Share2 } from 'lucide-react';
 
 export default function App() {
-  // Load data from localStorage or fallback
+  // Load data from localStorage or fallback with locked defaults
   const [data, setData] = useState<InvitationData>(() => {
     try {
       const saved = localStorage.getItem('khitan_invitation_data');
       if (saved) {
         const parsed = JSON.parse(saved);
-        // If previous cache had the placeholder "Rayyan", upgrade to Zaki Alvaro
         if (parsed.childFullName && !parsed.childFullName.includes("Rayyan")) {
           const hasOldUnsplashGallery = !parsed.galleryImages || parsed.galleryImages.some((img: string) => typeof img === 'string' && img.includes('unsplash.com'));
           const hasOldUnsplashPhoto = !parsed.photoUrl || (typeof parsed.photoUrl === 'string' && parsed.photoUrl.includes('unsplash.com'));
-          const useNewBacksound = !parsed.musicUrl || parsed.musicTitle === "Instrumen Syahdu Khitanan" || parsed.musicTitle === "Instrumen Khitanan";
           return {
             ...initialInvitationData,
             ...parsed,
+            childOrder: "Putra Pertama",
             galleryImages: hasOldUnsplashGallery ? initialInvitationData.galleryImages : parsed.galleryImages,
             photoUrl: hasOldUnsplashPhoto ? initialInvitationData.photoUrl : parsed.photoUrl,
-            musicUrl: useNewBacksound ? initialInvitationData.musicUrl : parsed.musicUrl,
-            musicTitle: useNewBacksound ? initialInvitationData.musicTitle : parsed.musicTitle,
+            musicUrl: initialInvitationData.musicUrl,
+            musicTitle: initialInvitationData.musicTitle,
+            whatsappNumber: parsed.whatsappNumber || initialInvitationData.whatsappNumber,
           };
         }
       }
@@ -62,8 +63,20 @@ export default function App() {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
+  const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
   const [guestName, setGuestName] = useState('Tamu Undangan');
+
+  const handleUpdateMedia = (updatedFields: Partial<InvitationData>) => {
+    setData((prev) => {
+      const next = { ...prev, ...updatedFields };
+      try {
+        localStorage.setItem('khitan_invitation_data', JSON.stringify(next));
+      } catch (err) {
+        console.error('Failed to save to localStorage:', err);
+      }
+      return next;
+    });
+  };
 
   // Detect ?to= in URL query params
   useEffect(() => {
@@ -73,19 +86,13 @@ export default function App() {
       if (toParam && toParam.trim()) {
         setGuestName(toParam.trim());
       }
+      if (searchParams.get('edit') === 'media') {
+        setIsMediaModalOpen(true);
+      }
     } catch {
       // fallback
     }
   }, []);
-
-  // Sync to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem('khitan_invitation_data', JSON.stringify(data));
-    } catch {
-      // ignore
-    }
-  }, [data]);
 
   useEffect(() => {
     try {
@@ -97,6 +104,7 @@ export default function App() {
 
   const handleOpenEnvelope = () => {
     setIsEnvelopeOpen(true);
+    triggerWelcomeConfetti();
     musicPlayer.start(data.musicUrl);
     setIsPlayingMusic(true);
   };
@@ -120,18 +128,8 @@ export default function App() {
     setWishes((prev) => [wishItem, ...prev]);
   };
 
-  const handleSaveData = (newData: InvitationData) => {
-    setData(newData);
-    if (newData.musicUrl !== data.musicUrl) {
-      musicPlayer.setSource(newData.musicUrl || '');
-      if (isPlayingMusic) {
-        musicPlayer.start(newData.musicUrl);
-      }
-    }
-  };
-
   return (
-    <main className="min-h-screen bg-[#f5f5f0] text-[#5A5A40] relative selection:bg-[#5A5A40]/15 selection:text-[#5A5A40] pb-20 font-sans">
+    <main className="min-h-screen bg-[#FAF7F8] text-[#332A2E] relative selection:bg-[#BA5D72]/20 selection:text-[#8B3A4C] pb-20 font-sans">
       {/* Interactive Opening Envelope Cover */}
       <OpeningEnvelope
         isOpen={isEnvelopeOpen}
@@ -140,32 +138,24 @@ export default function App() {
         onOpen={handleOpenEnvelope}
       />
 
-      {/* Top Banner with Quick Actions (Host Controls) */}
-      <header className="sticky top-0 z-30 bg-[#f5f5f0]/90 backdrop-blur-md border-b border-[#5A5A40]/15 px-4 py-3 shadow-xs">
+      {/* Top Banner with Quick Share Action */}
+      <header className="sticky top-0 z-30 bg-[#FAF7F8]/90 backdrop-blur-md border-b border-[#EACFD5] px-4 py-3 shadow-xs">
         <div className="max-w-xl mx-auto flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2 font-serif font-bold text-[#5A5A40] text-sm tracking-wide">
-            <span className="w-2 h-2 rounded-full bg-[#5A5A40] animate-pulse" />
+          <div className="flex items-center gap-2 font-serif font-bold text-[#8B3A4C] text-sm tracking-wide">
+            <span className="w-2 h-2 rounded-full bg-[#BA5D72] animate-pulse" />
             <span>Walimatul Khitan {data.childNickName}</span>
           </div>
 
           <div className="flex items-center gap-2 font-sans">
             <button
-              onClick={() => setIsEditorModalOpen(true)}
-              className="px-3 py-1.5 rounded-full bg-white/70 hover:bg-white text-[#5A5A40] border border-[#5A5A40]/20 font-medium text-xs tracking-wider flex items-center gap-1.5 transition cursor-pointer"
-              title="Ubah Nama & Jadwal"
-            >
-              <Edit3 className="w-3.5 h-3.5 text-[#5A5A40]" />
-              <span className="hidden sm:inline">Edit Data</span>
-            </button>
-
-            <button
+              id="btn-share-invitation-top"
+              type="button"
               onClick={() => setIsShareModalOpen(true)}
-              className="px-3 py-1.5 rounded-full bg-[#5A5A40] hover:bg-[#484833] text-white font-medium text-xs tracking-wider flex items-center gap-1.5 shadow-xs transition cursor-pointer"
-              title="Bagikan & Info Domain"
+              className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#8B3A4C] to-[#BA5D72] hover:opacity-90 text-white font-medium text-xs tracking-wider flex items-center gap-1.5 shadow-xs transition cursor-pointer"
+              title="Bagikan Undangan Digital"
             >
               <Share2 className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Bagikan / Info Domain</span>
-              <Globe className="w-3.5 h-3.5 sm:hidden" />
+              <span>Bagikan Undangan</span>
             </button>
           </div>
         </div>
@@ -179,12 +169,16 @@ export default function App() {
 
         <EventScheduleSection data={data} />
 
-        <GallerySection images={data.galleryImages} />
+        <GallerySection images={data.galleryImages || []} />
 
         <GuestbookRSVP
           wishes={wishes}
           onAddWish={handleAddWish}
           defaultName={guestName !== 'Tamu Undangan' ? guestName : ''}
+          whatsappNumber={data.whatsappNumber}
+          childName={data.childFullName}
+          fatherName={data.fatherName}
+          motherName={data.motherName}
         />
 
         <DigitalEnvelope
@@ -204,29 +198,32 @@ export default function App() {
         isPlaying={isPlayingMusic}
         onToggle={handleToggleMusic}
         musicTitle={data.musicTitle}
-        onOpenSettings={() => setIsEditorModalOpen(true)}
       />
+
+      {/* Floating Back to Top Button */}
+      <BackToTop />
 
       {/* Mobile Floating Bottom Bar */}
       <BottomNavBar
         onOpenShare={() => setIsShareModalOpen(true)}
-        onOpenEditor={() => setIsEditorModalOpen(true)}
       />
 
-      {/* Share & Domain Guide Modal */}
+      {/* Share & Guest Link Modal */}
       <ShareAndDomainModal
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
         data={data}
       />
 
-      {/* Edit Data Modal */}
-      <EditorModal
-        isOpen={isEditorModalOpen}
-        onClose={() => setIsEditorModalOpen(false)}
-        data={data}
-        onSave={handleSaveData}
-      />
+      {/* Media Settings Modal (Dapat dibuka via URL ?edit=media jika dibutuhkan) */}
+      {isMediaModalOpen && (
+        <MediaSettingsModal
+          isOpen={isMediaModalOpen}
+          onClose={() => setIsMediaModalOpen(false)}
+          data={data}
+          onSave={handleUpdateMedia}
+        />
+      )}
     </main>
   );
 }
