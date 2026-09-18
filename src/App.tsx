@@ -15,7 +15,7 @@ import { BottomNavBar } from './components/BottomNavBar';
 import { ShareAndDomainModal } from './components/ShareAndDomainModal';
 import { MediaSettingsModal } from './components/MediaSettingsModal';
 import { BackToTop } from './components/BackToTop';
-import { Share2, Image as ImageIcon } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 
 const CURRENT_DATA_VERSION = 'v6_2026_09_18_lock_zaki_portrait';
 
@@ -179,17 +179,6 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2 font-sans">
-            <button
-              id="btn-edit-media-top"
-              type="button"
-              onClick={() => setIsMediaModalOpen(true)}
-              className="px-3 py-1.5 rounded-full bg-white hover:bg-rose-50 text-[#8B3A4C] border border-[#F0D5DA] font-medium text-xs tracking-wider flex items-center gap-1.5 shadow-xs transition cursor-pointer"
-              title="Ganti / Sesuaikan Foto & QRIS"
-            >
-              <ImageIcon className="w-3.5 h-3.5 text-[#BA5D72]" />
-              <span className="hidden sm:inline">Foto & Media</span>
-            </button>
-
             <button
               id="btn-share-invitation-top"
               type="button"
