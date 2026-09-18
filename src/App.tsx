@@ -15,7 +15,9 @@ import { BottomNavBar } from './components/BottomNavBar';
 import { ShareAndDomainModal } from './components/ShareAndDomainModal';
 import { MediaSettingsModal } from './components/MediaSettingsModal';
 import { BackToTop } from './components/BackToTop';
-import { Share2 } from 'lucide-react';
+import { Share2, Image as ImageIcon } from 'lucide-react';
+
+const CURRENT_DATA_VERSION = 'v6_2026_09_18_lock_zaki_portrait';
 
 export default function App() {
   // Load data from localStorage or fallback with locked defaults
@@ -24,24 +26,54 @@ export default function App() {
       const saved = localStorage.getItem('khitan_invitation_data');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.childFullName && !parsed.childFullName.includes("Rayyan")) {
-          const hasOldUnsplashGallery = !parsed.galleryImages || parsed.galleryImages.some((img: string) => typeof img === 'string' && img.includes('unsplash.com'));
-          const hasOldUnsplashPhoto = !parsed.photoUrl || (typeof parsed.photoUrl === 'string' && parsed.photoUrl.includes('unsplash.com'));
-          return {
+        const isOldVersion = !parsed._version || parsed._version !== CURRENT_DATA_VERSION;
+        const hasOldGeneratedImages =
+          (typeof parsed.photoUrl === 'string' && (parsed.photoUrl.includes('regenerated_image') || parsed.photoUrl.includes('unsplash') || parsed.photoUrl.includes('DSC_'))) ||
+          (typeof parsed.coverPhotoUrl === 'string' && parsed.coverPhotoUrl.includes('DSC_')) ||
+          (typeof parsed.coverBackgroundUrl === 'string' && parsed.coverBackgroundUrl.includes('DSC_')) ||
+          (Array.isArray(parsed.galleryImages) && parsed.galleryImages.some((img: string) => typeof img === 'string' && (img.includes('regenerated_image') || img.includes('unsplash'))));
+
+        if (isOldVersion || hasOldGeneratedImages || !parsed.childFullName || parsed.childFullName.includes("Rayyan")) {
+          const freshData: InvitationData = {
             ...initialInvitationData,
             ...parsed,
+            _version: CURRENT_DATA_VERSION,
+            photoUrl: initialInvitationData.photoUrl,
+            coverPhotoUrl: initialInvitationData.coverPhotoUrl,
+            coverBackgroundUrl: "",
+            galleryImages: initialInvitationData.galleryImages,
+            childFullName: "ZAKI ALVARO",
+            childNickName: "ZAKI",
             childOrder: "Putra Pertama",
-            galleryImages: hasOldUnsplashGallery ? initialInvitationData.galleryImages : parsed.galleryImages,
-            photoUrl: hasOldUnsplashPhoto ? initialInvitationData.photoUrl : parsed.photoUrl,
-            musicUrl: initialInvitationData.musicUrl,
-            musicTitle: initialInvitationData.musicTitle,
-            whatsappNumber: parsed.whatsappNumber || initialInvitationData.whatsappNumber,
+            fatherName: "SUBHAN HALABI",
+            motherName: "NUNUNG NURAENI",
           };
+          localStorage.setItem('khitan_invitation_data', JSON.stringify(freshData));
+          return freshData;
         }
+
+        return {
+          ...initialInvitationData,
+          ...parsed,
+          // Guarantee locked portrait photo of Zaki as main cover & profile
+          photoUrl: initialInvitationData.photoUrl,
+          coverPhotoUrl: initialInvitationData.coverPhotoUrl,
+          coverBackgroundUrl: parsed.coverBackgroundUrl && !parsed.coverBackgroundUrl.includes('DSC_') ? parsed.coverBackgroundUrl : "",
+        };
       }
     } catch {
       // ignore
     }
+
+    try {
+      localStorage.setItem('khitan_invitation_data', JSON.stringify({
+        ...initialInvitationData,
+        _version: CURRENT_DATA_VERSION,
+      }));
+    } catch {
+      // ignore
+    }
+
     return initialInvitationData;
   });
 
@@ -68,7 +100,7 @@ export default function App() {
 
   const handleUpdateMedia = (updatedFields: Partial<InvitationData>) => {
     setData((prev) => {
-      const next = { ...prev, ...updatedFields };
+      const next: InvitationData = { ...prev, ...updatedFields, _version: CURRENT_DATA_VERSION };
       try {
         localStorage.setItem('khitan_invitation_data', JSON.stringify(next));
       } catch (err) {
@@ -147,6 +179,17 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2 font-sans">
+            <button
+              id="btn-edit-media-top"
+              type="button"
+              onClick={() => setIsMediaModalOpen(true)}
+              className="px-3 py-1.5 rounded-full bg-white hover:bg-rose-50 text-[#8B3A4C] border border-[#F0D5DA] font-medium text-xs tracking-wider flex items-center gap-1.5 shadow-xs transition cursor-pointer"
+              title="Ganti / Sesuaikan Foto & QRIS"
+            >
+              <ImageIcon className="w-3.5 h-3.5 text-[#BA5D72]" />
+              <span className="hidden sm:inline">Foto & Media</span>
+            </button>
+
             <button
               id="btn-share-invitation-top"
               type="button"

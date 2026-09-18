@@ -1,8 +1,8 @@
 import { InvitationData, WishMessage } from '../types';
-import galleryImg1 from '../assets/images/regenerated_image_1788774460876.jpg';
-import galleryImg2 from '../assets/images/regenerated_image_1788774464911.jpg';
-import galleryImg3 from '../assets/images/regenerated_image_1788774456280.jpg';
-import galleryImg4 from '../assets/images/regenerated_image_1788774468813.jpg';
+import photoZakiPortrait from '../assets/images/PXL_20260207_072930985.jpg';
+import photoZaki1 from '../assets/images/DSC_4966.JPG';
+import photoZaki2 from '../assets/images/DSC_5003.JPG';
+import photoZaki3 from '../assets/images/PXL_20250517_075620952.jpg';
 import defaultBacksound from '../assets/audio/backsound.mp3';
 
 export const initialInvitationData: InvitationData = {
@@ -11,10 +11,10 @@ export const initialInvitationData: InvitationData = {
   childOrder: "Putra Pertama",
   fatherName: "SUBHAN HALABI",
   motherName: "NUNUNG NURAENI",
-  photoUrl: galleryImg1,
-  coverPhotoUrl: galleryImg1,
-  coverBackgroundUrl: galleryImg2,
-  coverBackgroundOpacity: 0.22,
+  photoUrl: photoZakiPortrait,
+  coverPhotoUrl: photoZakiPortrait,
+  coverBackgroundUrl: "",
+  coverBackgroundOpacity: 0.15,
   qrisImageUrl: "",
   eventDate: "2026-09-27",
   eventTime: "09.00 WIB s/d Selesai",
@@ -41,10 +41,10 @@ export const initialInvitationData: InvitationData = {
   ],
   giftAddress: "Ds. Pedaleman Kp. Pesisir RT 004 / RW 002, Pasar Lembentuk (Kediaman Bpk. Subhan Halabi & Ibu Nunung Nuraeni) - Telp: 0821-2488-5823",
   galleryImages: [
-    galleryImg1,
-    galleryImg2,
-    galleryImg3,
-    galleryImg4
+    photoZakiPortrait,
+    photoZaki1,
+    photoZaki2,
+    photoZaki3
   ],
   musicTitle: "A Thousand Years (Piano Instrumental)",
   musicUrl: defaultBacksound,

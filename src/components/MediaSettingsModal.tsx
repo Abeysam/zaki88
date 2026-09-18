@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Image, Sliders, QrCode, X, Check, Upload, Trash2, Sparkles, RefreshCw } from 'lucide-react';
 import { InvitationData } from '../types';
+import { initialInvitationData } from '../data/defaultInvitation';
 
 interface MediaSettingsModalProps {
   isOpen: boolean;
@@ -47,6 +48,7 @@ export const MediaSettingsModal: React.FC<MediaSettingsModalProps> = ({
   const handleApply = () => {
     onSave({
       coverPhotoUrl,
+      photoUrl: coverPhotoUrl,
       coverBackgroundUrl,
       coverBackgroundOpacity,
       qrisImageUrl,
@@ -55,15 +57,17 @@ export const MediaSettingsModal: React.FC<MediaSettingsModalProps> = ({
   };
 
   const handleResetToDefault = () => {
-    setCoverPhotoUrl(data.photoUrl || '');
-    setCoverBackgroundUrl('');
-    setCoverBackgroundOpacity(0.22);
-    setQrisImageUrl('');
+    setCoverPhotoUrl(initialInvitationData.photoUrl);
+    setCoverBackgroundUrl(initialInvitationData.coverBackgroundUrl || '');
+    setCoverBackgroundOpacity(initialInvitationData.coverBackgroundOpacity ?? 0.18);
+    setQrisImageUrl(initialInvitationData.qrisImageUrl || '');
     onSave({
-      coverPhotoUrl: data.photoUrl || '',
-      coverBackgroundUrl: '',
-      coverBackgroundOpacity: 0.22,
-      qrisImageUrl: '',
+      photoUrl: initialInvitationData.photoUrl,
+      coverPhotoUrl: initialInvitationData.coverPhotoUrl,
+      coverBackgroundUrl: initialInvitationData.coverBackgroundUrl,
+      coverBackgroundOpacity: initialInvitationData.coverBackgroundOpacity,
+      galleryImages: initialInvitationData.galleryImages,
+      qrisImageUrl: initialInvitationData.qrisImageUrl || '',
     });
   };
 
@@ -128,7 +132,7 @@ export const MediaSettingsModal: React.FC<MediaSettingsModalProps> = ({
                   <span className="text-[10px] text-gray-400 text-center px-1">Kosong</span>
                 )}
               </div>
-              <div className="flex-1">
+              <div className="flex-1 space-y-2">
                 <input
                   type="file"
                   ref={fileInputCoverPhotoRef}
@@ -139,10 +143,18 @@ export const MediaSettingsModal: React.FC<MediaSettingsModalProps> = ({
                 <button
                   type="button"
                   onClick={() => fileInputCoverPhotoRef.current?.click()}
-                  className="w-full py-2.5 px-3 rounded-xl border border-[#BA5D72] bg-white hover:bg-[#FDF2F4] text-[#8B3A4C] text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer shadow-xs"
+                  className="w-full py-2 px-3 rounded-xl border border-[#BA5D72] bg-white hover:bg-[#FDF2F4] text-[#8B3A4C] text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer shadow-xs"
                 >
                   <Upload className="w-3.5 h-3.5" />
-                  <span>Pilih File Foto Sampul (Image 1)</span>
+                  <span>Upload Foto Baru</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCoverPhotoUrl(initialInvitationData.photoUrl)}
+                  className="w-full py-1.5 px-3 rounded-xl bg-[#FDF2F4] hover:bg-[#FCE7EC] text-[#8B3A4C] text-[11px] font-semibold border border-[#F3CBD3] flex items-center justify-center gap-1.5 transition cursor-pointer"
+                >
+                  <Sparkles className="w-3 h-3 text-[#D4AF37]" />
+                  <span>Gunakan Foto Portrait Zaki (Utama)</span>
                 </button>
               </div>
             </div>

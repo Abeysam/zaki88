@@ -127,13 +127,13 @@ export const OpeningEnvelope: React.FC<OpeningEnvelopeProps> = ({
 
               {/* Kadio Arched Photo Frame (Kubah Lengkung) */}
               <div className="relative mb-5">
-                <div className="w-32 h-44 sm:w-36 sm:h-48 arch-frame p-1.5 bg-gradient-to-b from-[#F3CBD3] via-[#FAF7F8] to-[#EACFD5] shadow-xl shadow-rose-950/10 border border-[#E0A899]/50 relative">
+                <div className="w-36 h-48 sm:w-40 sm:h-52 arch-frame p-1.5 bg-gradient-to-b from-[#F3CBD3] via-[#FAF7F8] to-[#EACFD5] shadow-xl shadow-rose-950/10 border border-[#E0A899]/50 relative">
                   <div className="w-full h-full arch-frame overflow-hidden bg-rose-50/50 relative">
                     {coverPhoto ? (
                       <img
                         src={coverPhoto}
                         alt={data.childFullName}
-                        className="w-full h-full object-cover select-none"
+                        className="w-full h-full object-cover object-[50%_15%] select-none"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-[#BA5D72]">

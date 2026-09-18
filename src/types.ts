@@ -40,4 +40,5 @@ export interface InvitationData {
   musicTitle?: string;
   whatsappNumber?: string;
   themeColor: 'emerald' | 'gold' | 'sapphire';
+  _version?: string;
 }

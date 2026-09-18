@@ -40,7 +40,7 @@ export const ChildProfile: React.FC<ChildProfileProps> = ({ data }) => {
                   <img
                     src={data.coverPhotoUrl || data.photoUrl}
                     alt={data.childFullName}
-                    className="w-full h-full object-cover select-none"
+                    className="w-full h-full object-cover object-[50%_15%] select-none"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-[#BA5D72]">
